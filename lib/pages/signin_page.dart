@@ -2,6 +2,12 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:future_jobs/pages/signup_page.dart';
 import 'package:future_jobs/themes.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user_model.dart';
+import '../providers/auth_provider.dart';
+import '../providers/user_provider.dart';
+import 'home_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({ Key? key }) : super(key: key);
@@ -13,10 +19,22 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
 
   bool isEmailValid = true;
+  bool isLoading = false;
   TextEditingController emailController = TextEditingController(text: '');
-
+  TextEditingController passwordController = TextEditingController(text: '');
+  
   @override
   Widget build(BuildContext context) {
+    var authProvider = Provider.of<AuthProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
+
+    void showError(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        backgroundColor: redColor,
+      ));
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -102,6 +120,7 @@ class _SignInPageState extends State<SignInPage> {
                       height: 8,
                     ),
                     TextFormField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                           fillColor: inputFieldColor,
@@ -122,9 +141,35 @@ class _SignInPageState extends State<SignInPage> {
                       child: Container(
                         width: 400,
                         height: 50,
-                        child: TextButton(
-                          onPressed: (){
+                        child: isLoading ? const Center(child: CircularProgressIndicator()): TextButton(
+                          onPressed: () async {
+                            if(emailController.text.isEmpty || passwordController.text.isEmpty){
+                              showError('email dan password tidak boleh kosong');
+                            } else {
+                               setState(() {
+                                isLoading = true;
+                              });
 
+                              UserModel? user = await authProvider.login(
+                                  emailController.text,
+                                  passwordController.text,);
+
+                              setState(() {
+                                isLoading = false;
+                              });
+
+
+                              if (user == null) {
+                                showError('email atau password salah');
+                              } else {
+                                userProvider.user;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ));
+                              }
+                            }
                           },
                           child: Text(
                             'Sign In',
