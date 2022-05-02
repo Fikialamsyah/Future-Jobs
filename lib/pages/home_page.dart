@@ -79,13 +79,13 @@ class HomePage extends StatelessWidget {
                     const SizedBox(
                       width: 16,
                     ),JobCard(
-                      text: 'App\nDesigner',
+                      text: 'App Designer',
                       imageUrl: 'assets/image_category4.png',
                     ),
                     const SizedBox(
                       width: 16,
                     ),JobCard(
-                      text: 'Content\nWriter',
+                      text: 'Content Writer',
                       imageUrl: 'assets/image_category5.png',
                     ),
                     const SizedBox(
