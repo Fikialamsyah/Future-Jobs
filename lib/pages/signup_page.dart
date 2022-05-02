@@ -1,7 +1,13 @@
+
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:future_jobs/models/user_model.dart';
 import 'package:future_jobs/pages/signin_page.dart';
+import 'package:future_jobs/providers/auth_provider.dart';
+import 'package:future_jobs/providers/user_provider.dart';
 import 'package:future_jobs/themes.dart';
+import 'package:provider/provider.dart';
 
 import 'home_page.dart';
 
@@ -16,8 +22,19 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isEmailValid = true;
   bool isUploaded = false;
   TextEditingController emailController = TextEditingController(text: '');
+  TextEditingController passwordController = TextEditingController(text: '');
+  TextEditingController nameController = TextEditingController(text: '');
+  TextEditingController goalController = TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
+
+    var authProvider = Provider.of<AuthProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
+
+    void showError(String message){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: redColor,));
+    }
+
     Widget showedImage() {
       return Center(
         child: InkWell(
@@ -93,6 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 8,
                     ),
                     TextFormField(
+                      controller: nameController,
                       decoration: InputDecoration(
                           fillColor: inputFieldColor,
                           filled: true,
@@ -154,6 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 8,
                     ),
                     TextFormField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                           fillColor: inputFieldColor,
@@ -178,6 +197,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 8,
                     ),
                     TextFormField(
+                      controller: goalController,
                       decoration: InputDecoration(
                           fillColor: inputFieldColor,
                           filled: true,
@@ -198,8 +218,17 @@ class _SignUpPageState extends State<SignUpPage> {
                         width: 400,
                         height: 50,
                         child: TextButton(
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
+                          onPressed: () async {
+
+                            UserModel? user = await authProvider.register(emailController.text, passwordController.text, nameController.text, goalController.text);
+
+                            if (user == null){
+                              showError('email sudah terdaftar');
+                            } else {
+                              userProvider.user;
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
+                            }
+             
                           },
                           child: Text(
                             'Sign Up',
