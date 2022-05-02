@@ -1,5 +1,3 @@
-
-
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:future_jobs/models/user_model.dart';
@@ -21,18 +19,21 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool isEmailValid = true;
   bool isUploaded = false;
+  bool isLoading = false; 
   TextEditingController emailController = TextEditingController(text: '');
   TextEditingController passwordController = TextEditingController(text: '');
   TextEditingController nameController = TextEditingController(text: '');
   TextEditingController goalController = TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
-
     var authProvider = Provider.of<AuthProvider>(context);
     var userProvider = Provider.of<UserProvider>(context);
 
-    void showError(String message){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: redColor,));
+    void showError(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        backgroundColor: redColor,
+      ));
     }
 
     Widget showedImage() {
@@ -217,29 +218,50 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Container(
                         width: 400,
                         height: 50,
-                        child: TextButton(
+                        child: isLoading ? const Center(child: CircularProgressIndicator(),) : TextButton(
                           onPressed: () async {
-
-                            UserModel? user = await authProvider.register(emailController.text, passwordController.text, nameController.text, goalController.text);
-
-                            if (user == null){
-                              showError('email sudah terdaftar');
+                            if (emailController.text.isEmpty ||
+                                emailController.text.isEmpty ||
+                                passwordController.text.isEmpty ||
+                                goalController.text.isEmpty) {
+                              showError('semua fields harus diisi');
                             } else {
-                              userProvider.user;
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
+
+                              setState(() {
+                                isLoading = true;
+                              });
+
+                              UserModel? user = await authProvider.register(
+                                  emailController.text,
+                                  passwordController.text,
+                                  nameController.text,
+                                  goalController.text);
+
+                              setState(() {
+                                isLoading = false;
+                              });
+
+
+                              if (user == null) {
+                                showError('email sudah terdaftar');
+                              } else {
+                                userProvider.user;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ));
+                              }
                             }
-             
                           },
                           child: Text(
                             'Sign Up',
                             style: whiteTextColor,
                           ),
                           style: TextButton.styleFrom(
-                            backgroundColor: primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(66)
-                            )
-                          ),
+                              backgroundColor: primaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(66))),
                         ),
                       ),
                     ),
