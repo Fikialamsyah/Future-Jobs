@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:future_jobs/models/category_model.dart';
 import 'package:future_jobs/themes.dart';
-import 'package:future_jobs/widgets/custom_list.dart';
+import 'package:future_jobs/widgets/job_tile.dart';
+import 'package:provider/provider.dart';
 
-import '../widgets/job_card.dart';
+import '../providers/category_provider.dart';
+import '../providers/user_provider.dart';
+import '../widgets/category_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
+    var categoryProvider = Provider.of<CategoryProvider>(context);
+
     Widget Header() {
       return Container(
         padding:
@@ -20,16 +27,16 @@ class HomePage extends StatelessWidget {
               children: [
                 Text(
                   'Howdy',
-                  style: greyTextColor.copyWith(fontSize: 16),
+                  style: greyTextStyle.copyWith(fontSize: 16),
                 ),
                 Text(
-                  'Jason Powell',
+                  userProvider.user?.name ?? '',
                   style: blackTextStyle.copyWith(
                       fontSize: 24, fontWeight: semiBold),
                 )
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Image.asset(
               'assets/image_profile.png',
               width: 58,
@@ -54,44 +61,35 @@ class HomePage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    JobCard(
-                      text: 'Website Developer',
-                      imageUrl: 'assets/image_category1.png',
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    JobCard(
-                      text: 'Mobile Developer',
-                      imageUrl: 'assets/image_category2.png',
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    JobCard(
-                      text: 'Website Developer',
-                      imageUrl: 'assets/image_category3.png',
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),JobCard(
-                      text: 'App Designer',
-                      imageUrl: 'assets/image_category4.png',
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),JobCard(
-                      text: 'Content Writer',
-                      imageUrl: 'assets/image_category5.png',
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                  ],
+              Container(
+                height: 200,
+                child: FutureBuilder<List<CategoryModel>>(
+                  future: categoryProvider.getCategories(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {               
+                      return ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: snapshot.data!.map((category) {
+
+                          int index = -1;
+                      
+                          return Container(
+                            margin: EdgeInsets.only(
+                              left: index == 0 ? defaultMargin : 0
+                            ),
+                            child: CategoryCard(
+                              name: category.name!, 
+                              imageUrl: category.imageUrl!
+                            )
+                          );
+                        }
+                        ).toList()
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ),
               const SizedBox(
@@ -99,36 +97,31 @@ class HomePage extends StatelessWidget {
               ),
               Text(
                 'Just Posted',
-                style: blackTextStyle.copyWith(
-                  fontSize: 16,
-                  fontWeight: medium
-                ),
+                style:
+                    blackTextStyle.copyWith(fontSize: 16, fontWeight: medium),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
-              CustomList(
-                jobTitle: 'Fron-End Developer', 
-                company: 'Google', 
-                imageUrl: 'assets/icon_google.png'
-              ),
-              SizedBox(
+              JobTile(
+                  name : 'Fron-End Developer',
+                  companyName: 'Google',
+                  companyLogo: 'assets/icon_google.png'),
+              const SizedBox(
                 height: 17,
               ),
-              CustomList(
-                jobTitle: 'UI Designer', 
-                company: 'Instagram', 
-                imageUrl: 'assets/icon_instagram.png'
-              ),
-              SizedBox(
+              JobTile(
+                  name : 'UI Designer',
+                  companyName : 'Instagram',
+                  companyLogo : 'assets/icon_instagram.png'),
+              const SizedBox(
                 height: 17,
               ),
-              CustomList(
-                jobTitle: 'Data Scientist', 
-                company: 'Facebook', 
-                imageUrl: 'assets/icon_facebook.png'
-              ),   
-            ],      
+              JobTile(
+                  name: 'Data Scientist',
+                  companyName: 'Facebook',
+                  companyLogo: 'assets/icon_facebook.png'),
+            ],
           ),
         ),
       );
@@ -147,50 +140,29 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(top: 20),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: primaryColor,
-          unselectedItemColor: greyColor,
-          currentIndex: 0,
-          elevation: 0,
-          iconSize: 20,
-          items: [
-            BottomNavigationBarItem(
-              label: '',
-              icon: ImageIcon(
-                AssetImage(
-                  'assets/icon_home.png'
-                )
-              )
-            ),
-            BottomNavigationBarItem(
-              label: '',
-              icon: ImageIcon(
-                AssetImage(
-                  'assets/icon_notification.png'
-                )
-              )
-            ),
-            BottomNavigationBarItem(
-              label: '',
-              icon: ImageIcon(
-                AssetImage(
-                  'assets/icon_love.png'
-                )
-              )
-            ),
-            BottomNavigationBarItem(
-              label: '',
-              icon: ImageIcon(
-                AssetImage(
-                  'assets/icon_user.png'
-                )
-              )
-            ),
-          ],
-        )
-      ),
+          margin: const EdgeInsets.only(top: 20),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: primaryColor,
+            unselectedItemColor: greyColor,
+            currentIndex: 0,
+            elevation: 0,
+            iconSize: 20,
+            items: [
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: ImageIcon(AssetImage('assets/icon_home.png'))),
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: ImageIcon(AssetImage('assets/icon_notification.png'))),
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: ImageIcon(AssetImage('assets/icon_love.png'))),
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: ImageIcon(AssetImage('assets/icon_user.png'))),
+            ],
+          )),
     );
   }
 }
