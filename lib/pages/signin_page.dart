@@ -45,7 +45,7 @@ class _SignInPageState extends State<SignInPage> {
               children: [
                 Text(
                   'Sign In',
-                  style: greyTextColor.copyWith(
+                  style: greyTextStyle.copyWith(
                     fontSize: 16
                   ),
                 ),
@@ -74,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                    Text(
                       'Email Address',
-                      style: greyTextColor.copyWith(fontSize: 16),
+                      style: greyTextStyle.copyWith(fontSize: 16),
                     ),
                     const SizedBox(
                       height: 8,
@@ -114,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     Text(
                       'Password',
-                      style: greyTextColor.copyWith(fontSize: 16),
+                      style: greyTextStyle.copyWith(fontSize: 16),
                     ),
                     const SizedBox(
                       height: 8,
@@ -162,7 +162,7 @@ class _SignInPageState extends State<SignInPage> {
                               if (user == null) {
                                 showError('email atau password salah');
                               } else {
-                                userProvider.user;
+                                userProvider.user = user;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -173,7 +173,7 @@ class _SignInPageState extends State<SignInPage> {
                           },
                           child: Text(
                             'Sign In',
-                            style: whiteTextColor,
+                            style: whiteTextStyle,
                           ),
                           style: TextButton.styleFrom(
                             backgroundColor: primaryColor,
@@ -196,7 +196,7 @@ class _SignInPageState extends State<SignInPage> {
                           padding: const EdgeInsets.only(bottom: 40),
                           child: Text(
                             'Create New Account',
-                            style: greyTextColor.copyWith(
+                            style: greyTextStyle.copyWith(
                               fontSize: 14,
                               fontWeight: light
                             ),

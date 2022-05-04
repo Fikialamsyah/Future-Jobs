@@ -42,7 +42,7 @@ class _SplashPageState extends State<SplashPage> {
             ),
             Text(
               'FUTUREJOB',
-              style: whiteTextColor.copyWith(
+              style: whiteTextStyle.copyWith(
                 fontSize: 32,
                 fontWeight: semiBold
               ),

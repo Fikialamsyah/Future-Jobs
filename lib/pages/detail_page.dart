@@ -29,7 +29,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
             child: Text(
                 'You have applied this job and the\nrecruiter will contact you',
-                style: greyTextColor,
+                style: greyTextStyle,
                 textAlign: TextAlign.center,
             )
           ),
@@ -56,7 +56,7 @@ class _DetailPageState extends State<DetailPage> {
           ),
           Text(
             'Google, Inc • Jakarta',
-            style: greyTextColor,
+            style: greyTextStyle,
           ),
         ],
       );
@@ -230,7 +230,7 @@ class _DetailPageState extends State<DetailPage> {
                   },
                   child: Text(
                     'Apply For Job',
-                    style: whiteTextColor.copyWith(fontWeight: semiBold),
+                    style: whiteTextStyle.copyWith(fontWeight: semiBold),
                   ),
                   style: TextButton.styleFrom(
                       backgroundColor: primaryColor,
@@ -244,7 +244,7 @@ class _DetailPageState extends State<DetailPage> {
           Center(
             child: Text(
               'Message Recruiter',
-              style: greyTextColor,
+              style: greyTextStyle,
             ),
           )
         ],
@@ -267,7 +267,7 @@ class _DetailPageState extends State<DetailPage> {
                   },
                   child: Text(
                     'Cancel Apply',
-                    style: whiteTextColor.copyWith(fontWeight: semiBold),
+                    style: whiteTextStyle.copyWith(fontWeight: semiBold),
                   ),
                   style: TextButton.styleFrom(
                       backgroundColor: redColor,
@@ -281,7 +281,7 @@ class _DetailPageState extends State<DetailPage> {
           Center(
             child: Text(
               'Message Recruiter',
-              style: greyTextColor,
+              style: greyTextStyle,
             ),
           )
         ],

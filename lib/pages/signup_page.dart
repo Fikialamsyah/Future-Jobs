@@ -86,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
               children: [
                 Text(
                   'Sign Up',
-                  style: greyTextColor.copyWith(fontSize: 16),
+                  style: greyTextStyle.copyWith(fontSize: 16),
                 ),
                 Text(
                   'Begin New Journey',
@@ -105,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     Text(
                       'Full Name',
-                      style: greyTextColor.copyWith(fontSize: 16),
+                      style: greyTextStyle.copyWith(fontSize: 16),
                     ),
                     const SizedBox(
                       height: 8,
@@ -127,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Text(
                       'Email Address',
-                      style: greyTextColor.copyWith(fontSize: 16),
+                      style: greyTextStyle.copyWith(fontSize: 16),
                     ),
                     const SizedBox(
                       height: 8,
@@ -167,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Text(
                       'Password',
-                      style: greyTextColor.copyWith(fontSize: 16),
+                      style: greyTextStyle.copyWith(fontSize: 16),
                     ),
                     const SizedBox(
                       height: 8,
@@ -192,7 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Text(
                       'Goal',
-                      style: greyTextColor.copyWith(fontSize: 16),
+                      style: greyTextStyle.copyWith(fontSize: 16),
                     ),
                     const SizedBox(
                       height: 8,
@@ -256,7 +256,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                           child: Text(
                             'Sign Up',
-                            style: whiteTextColor,
+                            style: whiteTextStyle,
                           ),
                           style: TextButton.styleFrom(
                               backgroundColor: primaryColor,
@@ -280,7 +280,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 40),
                           child: Text('Back to Sign In',
-                              style: greyTextColor.copyWith(
+                              style: greyTextStyle.copyWith(
                                   fontSize: 14, fontWeight: light)),
                         ),
                       ),

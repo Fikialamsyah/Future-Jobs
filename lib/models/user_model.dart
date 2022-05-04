@@ -22,7 +22,7 @@ class UserModel{
   }
 
   Map<String, dynamic> toJson() => {
-      'id' : name,
+      'id' : id,
       'email' : email,
       'password': password,
       'name' : name,

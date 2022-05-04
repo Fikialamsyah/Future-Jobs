@@ -29,7 +29,7 @@ class OnBoardingPage extends StatelessWidget {
                 children: [
                   Text(
                     'Build Your Next\nFuture Career Like\na Master',
-                    style: whiteTextColor.copyWith(
+                    style: whiteTextStyle.copyWith(
                       fontSize: 32
                     ),
                   ),
@@ -38,7 +38,7 @@ class OnBoardingPage extends StatelessWidget {
                   ),
                   Text(
                     '18.000 Jobs available',
-                    style: whiteTextColor.copyWith(
+                    style: whiteTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: light
                     ),
@@ -82,7 +82,7 @@ class OnBoardingPage extends StatelessWidget {
                             },
                             child: Text(
                               'Sign In',
-                              style: whiteTextColor,
+                              style: whiteTextStyle,
                             ),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
