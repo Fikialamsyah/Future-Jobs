@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:future_jobs/pages/detail_page.dart';
 import '../themes.dart';
@@ -27,7 +29,7 @@ class JobTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
+         Image.network(
             companyLogo!,
             width: 44,
           ),

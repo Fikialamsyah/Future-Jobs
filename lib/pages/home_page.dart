@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:future_jobs/models/category_model.dart';
+import 'package:future_jobs/models/job_model.dart';
 import 'package:future_jobs/themes.dart';
 import 'package:future_jobs/widgets/job_tile.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/category_provider.dart';
+import '../providers/job_provider.dart';
 import '../providers/user_provider.dart';
 import '../widgets/category_card.dart';
 
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
     var categoryProvider = Provider.of<CategoryProvider>(context);
+    var jobProvider = Provider.of<JobProvider>(context);
 
     Widget Header() {
       return Container(
@@ -48,83 +50,75 @@ class HomePage extends StatelessWidget {
 
     Widget Body() {
       return Container(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Hot Category',
-                style:
-                    blackTextStyle.copyWith(fontSize: 16, fontWeight: medium),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Container(
-                height: 200,
-                child: FutureBuilder<List<CategoryModel>>(
-                  future: categoryProvider.getCategories(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {               
-                      return ListView(
+          child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Hot Category',
+              style: blackTextStyle.copyWith(fontSize: 16, fontWeight: medium),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              height: 200,
+              child: FutureBuilder<List<CategoryModel>>(
+                future: categoryProvider.getCategories(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return ListView(
                         scrollDirection: Axis.horizontal,
                         children: snapshot.data!.map((category) {
-
                           int index = -1;
-                      
+
                           return Container(
-                            margin: EdgeInsets.only(
-                              left: index == 0 ? defaultMargin : 0
-                            ),
-                            child: CategoryCard(
-                              name: category.name!, 
-                              imageUrl: category.imageUrl!
-                            )
-                          );
-                        }
-                        ).toList()
-                      );
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+                              margin: EdgeInsets.only(
+                                  left: index == 0 ? defaultMargin : 0),
+                              child: CategoryCard(
+                                  name: category.name!,
+                                  imageUrl: category.imageUrl!));
+                        }).toList());
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              Text(
-                'Just Posted',
-                style:
-                    blackTextStyle.copyWith(fontSize: 16, fontWeight: medium),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              JobTile(
-                  name : 'Fron-End Developer',
-                  companyName: 'Google',
-                  companyLogo: 'assets/icon_google.png'),
-              const SizedBox(
-                height: 17,
-              ),
-              JobTile(
-                  name : 'UI Designer',
-                  companyName : 'Instagram',
-                  companyLogo : 'assets/icon_instagram.png'),
-              const SizedBox(
-                height: 17,
-              ),
-              JobTile(
-                  name: 'Data Scientist',
-                  companyName: 'Facebook',
-                  companyLogo: 'assets/icon_facebook.png'),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Text(
+              'Just Posted',
+              style: blackTextStyle.copyWith(fontSize: 16, fontWeight: medium),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            FutureBuilder<List<JobModel>>(
+              future: jobProvider.getJobs(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    children: snapshot.data!
+                        .map((job) => JobTile(
+                              name: job.name,
+                              companyName: job.companyName,
+                              companyLogo: job.companyLogo,
+                            ))
+                        .toList(),
+                  );
+                }
+                 return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )
+          ],
         ),
-      );
+      ));
     }
 
     return Scaffold(
