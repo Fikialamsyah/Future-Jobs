@@ -16,9 +16,9 @@ Color inputFieldColor = Color(0xffF1F0F5);
 // Note : TextStyle
 TextStyle purpleTextStyle = GoogleFonts.poppins(color: primaryColor);
 TextStyle blackTextStyle = GoogleFonts.poppins(color: blackColor);
-TextStyle whiteTextColor = GoogleFonts.poppins(color: whiteColor);
-TextStyle redTextColor = GoogleFonts.poppins(color: redColor);
-TextStyle greyTextColor = GoogleFonts.poppins(color: greyColor);
+TextStyle whiteTextStyle = GoogleFonts.poppins(color: whiteColor);
+TextStyle redTextStyle = GoogleFonts.poppins(color: redColor);
+TextStyle greyTextStyle = GoogleFonts.poppins(color: greyColor);
 
 // Note : FontWeight
 FontWeight light = FontWeight.w300;
