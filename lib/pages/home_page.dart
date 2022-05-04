@@ -77,8 +77,7 @@ class HomePage extends StatelessWidget {
                               margin: EdgeInsets.only(
                                   left: index == 0 ? defaultMargin : 0),
                               child: CategoryCard(
-                                  name: category.name!,
-                                  imageUrl: category.imageUrl!));
+                                  category: category,));
                         }).toList());
                   }
                   return const Center(
@@ -104,9 +103,7 @@ class HomePage extends StatelessWidget {
                   return Column(
                     children: snapshot.data!
                         .map((job) => JobTile(
-                              name: job.name,
-                              companyName: job.companyName,
-                              companyLogo: job.companyLogo,
+                              job: job,
                             ))
                         .toList(),
                   );
@@ -115,7 +112,7 @@ class HomePage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               },
-            )
+            ),
           ],
         ),
       ));

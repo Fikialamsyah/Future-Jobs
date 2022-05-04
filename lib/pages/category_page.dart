@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:future_jobs/providers/job_provider.dart';
 import 'package:future_jobs/themes.dart';
 import 'package:future_jobs/widgets/job_tile.dart';
+import 'package:provider/provider.dart';
+
+import '../models/category_model.dart';
+import '../models/job_model.dart';
 
 class CategoryPage extends StatelessWidget {
-  final String? name;
-  final String? imageUrl;
+  
+  CategoryModel category;
 
-  const CategoryPage({
+  CategoryPage({
     Key? key,
-    this.name,
-    this.imageUrl
+    required this.category
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var jobProvider = Provider.of<JobProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -29,8 +34,8 @@ class CategoryPage extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 height: 290,
-                child: Image.asset(
-                  imageUrl!,
+                child: Image.network(
+                  category.imageUrl!,
                   fit: BoxFit.cover,
                 )
               ),
@@ -38,7 +43,7 @@ class CategoryPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 190.0, left: 24),
               child: Text(
-                name!,
+                category.name!,
                 style:
                     whiteTextStyle.copyWith(fontSize: 24, fontWeight: bold),
               ),
@@ -65,27 +70,23 @@ class CategoryPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-             JobTile(
-                name: 'Front-End Developer', 
-                companyName: 'Google', 
-                companyLogo: 'assets/icon_google.png'
-              ),
-              const SizedBox(
-                height: 17,
-              ),
-             JobTile(
-                name: 'UI Designer', 
-                companyName: 'Instagram', 
-                companyLogo: 'assets/icon_instagram.png'
-              ),
-              const SizedBox(
-                height: 17,
-              ),
-             JobTile(
-                name: 'Data Scientist', 
-                companyName: 'Facebook', 
-                companyLogo: 'assets/icon_facebook.png'
-              ),
+             FutureBuilder<List<JobModel>>(
+              future: jobProvider.getJobsbyCategory(category.name!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    children: snapshot.data!
+                        .map((job) => JobTile(
+                             job: job,
+                            ))
+                        .toList(),
+                  );
+                }
+                 return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )
             ],
           ),
         ),
@@ -101,27 +102,23 @@ class CategoryPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              JobTile(
-                name: 'Front-End Developer', 
-                companyName: 'Google', 
-                companyLogo: 'assets/icon_google.png'
-              ),
-              const SizedBox(
-                height: 17,
-              ),
-              JobTile(
-                name: 'UI Designer', 
-                companyName: 'Instagram', 
-                companyLogo: 'assets/icon_instagram.png'
-              ),
-              const SizedBox(
-                height: 17,
-              ),
-              JobTile(
-                name: 'Data Scientist', 
-                companyName: 'Facebook', 
-                companyLogo: 'assets/icon_facebook.png'
-              ),
+              FutureBuilder<List<JobModel>>(
+              future: jobProvider.getJobs(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    children: snapshot.data!
+                        .map((job) => JobTile(
+                              job: job,
+                            ))
+                        .toList(),
+                  );
+                }
+                 return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )
             ],
           ),
         )
